@@ -15,7 +15,7 @@ $(document).ready(function() {
         jokesObject = response;
         for (var i = 0; i < response.length; i++) {
           // $('#jokesContainer').append('<div class="jokeDiv">' + response[i] + '</div>');
-          $('#jokesContainer').append('<div class="jokeDiv"> Joke ' + i + '\: ' + response[i] + '</div>');
+          $('#jokesContainer').append('<div class="jokeDiv"> Joke ' + i + '\: ' + response[i].whoseJoke + '</div>');
         }
         console.log('jokesObject:', jokesObject);
         // console.log('response.whoseJoke:', response.whoseJoke[0]);
