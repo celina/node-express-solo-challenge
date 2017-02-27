@@ -1,7 +1,11 @@
 var express = require('express');
 var app = express();
 var path = require('path');
+var bodyParser = require('body-parser');
+
 var port = 3000;
+
+app.use(bodyParser.urlencoded({extended: true}));
 
 
 // initial jokes provided by the client
@@ -26,17 +30,20 @@ var jokes = [
 // static file requests
 app.use(express.static('server/public'));
 
-// routes
-
-
 // Send index.html file
 app.get('/', function(req, res) {
   res.sendFile(path.resolve('server/public/views/index.html'));
 });
 
-app.post("/jokes", function(req,res){
-    console.log('app.post /jokes works');
-});
+app.get('/jokes', function(req, res) {
+  console.log('this is on the server', jokes[0]);
+  res.send(jokes);
+  // console.log(req.body);
+})
+
+app.post('/jokes', function(req, res) {
+  console.log(req.body);
+})
 
 // Start the server!
 app.listen(port, function() {
