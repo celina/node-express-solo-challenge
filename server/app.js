@@ -34,6 +34,10 @@ app.get('/', function(req, res) {
   res.sendFile(path.resolve('server/public/views/index.html'));
 });
 
+app.post("/jokes", function(req,res){
+    console.log('app.post /jokes works');
+});
+
 // Start the server!
 app.listen(port, function() {
   console.log("Node listening on port " + port);
