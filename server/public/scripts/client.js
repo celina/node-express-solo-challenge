@@ -1,26 +1,54 @@
 $(document).ready(function() {
   console.log('jquery loaded');
 
-  var jokesObject = {};
+  var jokesObject = [];
 
-  loadJokes();
+  $('button').on('click', function() {
+    var inputAuthor = $('#inputAuthor').val();
+    var inputJoke = $('#inputJoke').val();
+    var inputAnswer = $('#inputAnswer').val();
 
-  function loadJokes(object){
-    $.ajax({
-      type: 'GET',
-      url: '/jokes',
-      data: object,
-      success: function(response){
-        console.log('response from jokes on server is:', response);
-        jokesObject = response;
-        for (var i = 0; i < response.length; i++) {
-          // $('#jokesContainer').append('<div class="jokeDiv">' + response[i] + '</div>');
-          $('#jokesContainer').append('<div class="jokeDiv"> Joke ' + i + '\: ' + response[i].whoseJoke + '</div>');
-        }
-        console.log('jokesObject:', jokesObject);
-        // console.log('response.whoseJoke:', response.whoseJoke[0]);
-      }
-    })
+  var newJoke = {
+    whoseJoke: inputAuthor,
+    jokeQuestion: inputJoke,
+    punchLine: inputAnswer
   }
 
+  console.log('This is the object we\'re sending: ', newJoke);
+
+    $.ajax({
+      type: 'POST',
+      url: '/jokes',
+      data: newJoke,
+      success: function(response) {
+        console.log('response from post jokes: ', response);
+        buildJokes(response);
+        $('#inputAuthor').val('');
+        $('#inputJoke').val('');
+        $('#inputAnswer').val('');
+      }
+    });
+  });
+
+  $.ajax({
+    type: 'GET',
+    url: '/jokes',
+    success: function(response){
+      console.log('response from jokes on server is:', response);
+      buildJokes(response);
+    }
+  })
+
 }); // end document ready
+
+function buildJokes(response) {
+  for (var i = 0; i < response.length; i++) {
+    var container = $('<div>');
+    var author = $('<p>Author: ' + response[i].whoseJoke + '</p>');
+    var question = $('<p>Question: ' + response[i].jokeQuestion + '</p>');
+    var answer = $('<p>Answer: ' + response[i].punchLine + '</p>');
+
+    container.append(author).append(question).append(answer);
+    $('#jokesContainer').append(container);
+  }
+}

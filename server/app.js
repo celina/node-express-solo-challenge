@@ -36,13 +36,14 @@ app.get('/', function(req, res) {
 });
 
 app.get('/jokes', function(req, res) {
-  console.log('this is on the server', jokes[0]);
   res.send(jokes);
   // console.log(req.body);
 })
 
 app.post('/jokes', function(req, res) {
-  console.log(req.body);
+  jokes.push(req.body);
+  console.log(jokes);
+  res.send(jokes);
 })
 
 // Start the server!
